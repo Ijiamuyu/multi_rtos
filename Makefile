@@ -46,7 +46,8 @@ KERNEL_C_SRCS = \
 
 PORTABLE_C_SRCS = \
 	$(PORTABLE_DIR)/riscv-virt.c \
-	$(PORTABLE_DIR)/ez_cpu.c
+	$(PORTABLE_DIR)/ez_cpu.c \
+	$(PORTABLE_DIR)/isr.c
 
 DRIVER_C_SRCS = \
 	$(DRIVER_DIR)/ns16550.c

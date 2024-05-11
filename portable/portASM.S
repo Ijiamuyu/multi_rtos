@@ -17,8 +17,7 @@
 .global ezos_risc_v_trap_handler
 .extern ez_tcb_curptr
 .extern ez_tcb_hdyptr
-.extern task1_cnt
-.extern task2_cnt
+.extern synchronous_exception
 
 .align 8
 .func
@@ -107,6 +106,11 @@ handle_asynchronous:
 		addi t1, t0, 3					/* 0x8000[]0003 == machine soft interrupt. */
         bne a0, t1, test_if_external_interrupt
 
+		/* clear sw interrupt */
+		addi x5, x0, 0
+		li x10, 0x02000000
+		store_x x5, 0(x10)
+
 	    j processed_source
 
 
@@ -118,7 +122,7 @@ handle_asynchronous:
 		j as_yet_unhandled
 
 handle_synchronous:
-	j handle_synchronous
+	jal synchronous_exception
 
 processed_source:
 	la  t1, ez_tcb_curptr

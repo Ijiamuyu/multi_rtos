@@ -15,7 +15,7 @@ volatile uint32_t task1_cnt, task2_cnt;
 void task1(void *p_arg) {
     while (1) {
         task1_cnt++;
-        // uart_printf("hello task1 %d\n", task1_cnt);
+        uart_printf("hello task1 %d\n", task1_cnt);
         ez_schedule();
     }
 }
@@ -23,14 +23,16 @@ void task1(void *p_arg) {
 void task2(void *p_arg) {
     while (1) {
         task2_cnt++;
-        // uart_printf("hello task2 %d\n", task2_cnt);
+        uart_printf("hello task2 %d\n", task2_cnt);
         ez_schedule();
     }
 }
 
 int main(void) {
     ez_err err;
-    uart_printf("Hello App\n");
+    int i;
+    for(i=0;i<10;i++)
+        uart_printf("Hello App %d\n",i);
 
     ez_init(&err);
     /* 创建任务 */
