@@ -31,8 +31,8 @@ void task2(void *p_arg) {
 int main(void) {
     ez_err err;
     int i;
-    for(i=0;i<10;i++)
-        uart_printf("Hello App %d\n",i);
+    for (i = 0; i < 10; i++)
+        uart_printf("Hello App %d\n", i);
 
     ez_init(&err);
     /* 创建任务 */

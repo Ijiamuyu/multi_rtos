@@ -46,8 +46,8 @@ typedef ez_uint8_t ez_prio_t;
 #error not suppoezed tool chain
 #endif
 
-#define EZ_ALIGN(size, align) (((size) + (align)-1) & ~((align)-1))
-#define EZ_ALIGN_DOWN(size, align) ((size) & ~((align)-1))
+#define EZ_ALIGN(size, align) (((size) + (align) - 1) & ~((align) - 1))
+#define EZ_ALIGN_DOWN(size, align) ((size) & ~((align) - 1))
 
 #define EZ_NULL (0)
 
