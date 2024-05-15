@@ -1,0 +1,14 @@
+get_current_component_dir_and_name(component_dir component_name)
+
+set(APPLICATION_INCLUDE "")
+set(APPLICATION_SOURCE "")
+
+list(APPEND APPLICATION_INCLUDE "${component_dir}")
+list(APPEND APPLICATION_SOURCE "${component_dir}/main.c")
+
+list(APPEND GLOBAL_INCLUDE ${APPLICATION_INCLUDE})
+list(APPEND GLOBAL_SOURCE ${APPLICATION_SOURCE})
+
+set(GLOBAL_INCLUDE ${GLOBAL_INCLUDE} PARENT_SCOPE)
+set(GLOBAL_SOURCE ${GLOBAL_SOURCE} PARENT_SCOPE)
+
