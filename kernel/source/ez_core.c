@@ -1,6 +1,7 @@
 #include "ez.h"
 
 extern void ez_start_high_rdy(void);
+extern void ez_setup_timer_interrupt();
 
 void ez_task_sw(void) {
     WRITE_MREG32(CLINT_ADDR + CLINT_MSIP, 0x1);
@@ -31,6 +32,7 @@ void ez_init(ez_err *p_err) {
 void ez_start(ez_err *p_err) {
     if (ez_running == EZ_STATE_STOPPED) {
         ez_tcb_hdyptr = ez_rdylist[0].head;
+        ez_setup_timer_interrupt();
         ez_start_high_rdy();
         *p_err = EZ_ERR_FATAL_RETURN;
     } else {
@@ -45,5 +47,4 @@ void ez_schedule(void) {
         ez_tcb_hdyptr = ez_rdylist[0].head;
     }
 
-    ez_task_sw();
 }

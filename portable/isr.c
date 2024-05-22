@@ -65,3 +65,24 @@ void synchronous_exception(void) {
     while (1)
         ;
 }
+
+void software_handler(void) {
+    uart_send_string("software exception");
+    print_csr();
+    while (1)
+        ;
+}
+
+void external_handler(void) {
+    uart_send_string("external exception");
+    print_csr();
+    while (1)
+        ;
+}
+
+void yet_unhandler(void) {
+    uart_send_string("yet_unhandler exception");
+    print_csr();
+    while (1)
+        ;
+}

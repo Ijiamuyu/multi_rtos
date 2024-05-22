@@ -18,6 +18,13 @@
 .extern ez_tcb_curptr
 .extern ez_tcb_hdyptr
 .extern synchronous_exception
+.extern software_handler
+.extern external_handler
+.extern yet_unhandler
+.extern ez_time_tick
+.extern mtimeptr
+.extern mtimecmptr
+.extern ez_onetick
 
 .align 8
 .func
@@ -34,15 +41,12 @@ ez_start_high_rdy:
 	addi x5, x5, 0x08
 	csrw mstatus, x5
 
-	/* enable sw interrupt */
+	/* enable timer interrupt */
 	csrr x5, mie
-	addi x5, x5, 0x08
+	addi x5, x5, 0x80
 	csrw mie, x5
 
-	/* active sw interrupt */
-	addi x5, x0, 0x1
-	li x10, 0x02000000
-	store_x x5,0(x10)
+	j ezos_risc_v_trap_handler
 
 ez_hang:
 	/* never here */
@@ -104,22 +108,44 @@ handle_asynchronous:
 		addi t0, x0, 1
 		slli t0, t0, __riscv_xlen - 1   /* LSB is already set, shift into MSB.  Shift 31 on 32-bit or 63 on 64-bit cores. */
 		addi t1, t0, 3					/* 0x8000[]0003 == machine soft interrupt. */
-        bne a0, t1, test_if_external_interrupt
+        bne a0, t1, test_if_mtimer
 
 		/* clear sw interrupt */
 		addi x5, x0, 0
 		li x10, 0x02000000
 		store_x x5, 0(x10)
+	    jal software_handler
 
-	    j processed_source
+	test_if_mtimer:
+		addi t0, x0, 1
 
+		slli t0, t0, __riscv_xlen - 1   /* LSB is already set, shift into MSB.  Shift 31 on 32-bit or 63 on 64-bit cores. */
+		addi t1, t0, 7					/* 0x8000[]0007 == machine timer interrupt. */
+		bne a0, t1, test_if_external_interrupt
+
+		/* add time tick code here */
+		jal ez_time_tick
+
+		load_x t0, mtimecmptr
+		load_x t1, mtimeptr
+		lw t2, 0(t1)
+		lw t3, 4(t1)
+		lw t5, ez_onetick
+		add t4, t5, t2
+		sltu t5, t4, t2
+		add t6, t3, t5
+		sw t4, 0(t0)
+		sw t6, 4(t0)
+
+		j processed_source
 
 	test_if_external_interrupt:			/* If there is a CLINT and the mtimer interrupt is not pending then check to see if an external interrupt is pending. */
 		addi t1, t1, 4					/* 0x80000007 + 4 = 0x8000000b == Machine external interrupt. */
 		bne a0, t1, as_yet_unhandled	/* Something as yet unhandled. */
+		jal external_handler
 
 	as_yet_unhandled:
-		j as_yet_unhandled
+		jal yet_unhandler
 
 handle_synchronous:
 	jal synchronous_exception

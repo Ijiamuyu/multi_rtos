@@ -1,5 +1,9 @@
 #include "ez.h"
 
+ez_time_t *mtimeptr = (ez_time_t *)(CLINT_ADDR + CLINT_MTIME);
+ez_time_t *mtimecmptr = (ez_time_t *)(CLINT_ADDR + CLINT_MTIMECMP);
+ez_time_t ez_onetick;
+
 ez_stk_t *ez_task_init(
         EzTaskPtr p_task,
         void *arg,
@@ -41,4 +45,20 @@ ez_stk_t *ez_task_init(
     *--p_stk = (ez_stk_t)p_task;      //
 
     return p_stk;
+}
+
+void ez_setup_timer_interrupt(void) {
+    ez_uint32_t *cur_time_high =
+            (ez_uint32_t *)(CLINT_ADDR + CLINT_MTIME + 0x4);
+    ez_uint32_t *cur_time_low = (ez_uint32_t *)(CLINT_ADDR + CLINT_MTIME);
+
+    ez_onetick = CPU_CLOCK_HZ / EZ_TIMER_TICK_HZ;
+    *mtimecmptr = (ez_time_t)*cur_time_high;
+    *mtimecmptr <<= 32;
+    *mtimecmptr |= (ez_time_t)*cur_time_low;
+    *mtimecmptr += (ez_time_t)ez_onetick;
+}
+
+void ez_time_tick(void) {
+    ez_schedule();
 }

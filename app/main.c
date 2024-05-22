@@ -10,28 +10,34 @@ static ez_stk_t task2_stk[TASK2_STK_SIZE];
 static EzTcb task1_tcb;
 static EzTcb task2_tcb;
 
-volatile uint32_t task1_cnt, task2_cnt;
+volatile uint32_t task1_cnt, task2_cnt, task1_flag = 1, task2_flag = 1;
 
 void task1(void *p_arg) {
     while (1) {
-        task1_cnt++;
-        uart_printf("hello task1 %d\n", task1_cnt);
-        ez_schedule();
+        if (task1_flag) {
+            task1_flag = 0;
+            task2_flag = 1;
+            task1_cnt++;
+            uart_printf("hello task1 %d\n", task1_cnt);
+        }
     }
 }
 
 void task2(void *p_arg) {
     while (1) {
-        task2_cnt++;
-        uart_printf("hello task2 %d\n", task2_cnt);
-        ez_schedule();
+        if (task2_flag) {
+            task2_flag = 0;
+            task1_flag = 1;
+            task2_cnt++;
+            uart_printf("hello task2 %d\n", task2_cnt);
+        }
     }
 }
 
 int main(void) {
     ez_err err;
     int i;
-    for (i = 0; i < 10; i++)
+    for (i = 0; i < 1; i++)
         uart_printf("Hello App %d\n", i);
 
     ez_init(&err);
