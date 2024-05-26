@@ -3,10 +3,6 @@
 extern void ez_start_high_rdy(void);
 extern void ez_setup_timer_interrupt();
 
-void ez_task_sw(void) {
-    WRITE_MREG32(CLINT_ADDR + CLINT_MSIP, 0x1);
-}
-
 void ez_rdylist_init(void) {
     ez_prio_t i;
     EzRdyList *p_rdy_list;
