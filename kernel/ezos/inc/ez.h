@@ -1,7 +1,7 @@
 #ifndef __EZ_H__
 #define __EZ_H__
 
-#include "riscv-virt.h"
+#include "cpu.h"
 #include "ez_cfg.h"
 #include "ezdef.h"
 
@@ -10,9 +10,6 @@
 #else
 #define EZ_EXT extern
 #endif
-
-#define WRITE_MREG32(addr, val) (*(ez_uint32_t *)(addr) = (val))
-#define READ_MREG32(addr) (*(ez_uint32_t *)(addr))
 
 #define EZ_STATE_STOPPED (ez_state_t)(0u)
 #define EZ_STATE_RUNNING (ez_state_t)(1u)

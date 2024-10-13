@@ -1,0 +1,12 @@
+get_current_component_dir_and_name(component_dir component_name)
+
+set(KERNEL_INCLUDE "")
+set(KERNEL_SOURCE "")
+
+
+list(APPEND GLOBAL_INCLUDE ${KERNEL_INCLUDE})
+list(APPEND GLOBAL_SOURCE ${KERNEL_SOURCE})
+
+set(GLOBAL_INCLUDE ${GLOBAL_INCLUDE} PARENT_SCOPE)
+set(GLOBAL_SOURCE ${GLOBAL_SOURCE} PARENT_SCOPE)
+

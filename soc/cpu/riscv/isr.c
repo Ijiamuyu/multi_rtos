@@ -1,4 +1,4 @@
-#include "riscv-virt.h"
+#include "cpu.h"
 
 static void int_to_str(const char* s, unsigned int num, char* str) {
     int i, s_len;
