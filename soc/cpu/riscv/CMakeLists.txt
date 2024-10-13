@@ -8,16 +8,9 @@ list(APPEND CPU_SOURCE  "${component_dir}/cpu.c")
 list(APPEND CPU_SOURCE  "${component_dir}/isr.c")
 list(APPEND CPU_SOURCE  "${component_dir}/start.S")
 
-add_compile_options(
-    -march=rv32imac -mabi=ilp32 -mcmodel=medany
-    -Wall -fmessage-length=0 -ffunction-sections
-    -fdata-sections -fno-builtin-printf
-    -Og -ggdb3 -D__riscv_float_abi_soft
-    )
-
 
 set(LINKER_SCRIPT "${component_dir}/fake_rom.lds")
-set(LINKER_FLAGS "-march=rv32imac -mabi=ilp32 -T ${LINKER_SCRIPT} -Wl,--Map=${PROJECT_BINARY_DIR}/${TARGET_NAME}.map -nostartfiles -Xlinker --gc-sections -Xlinker --defsym=__stack_size=300 -D__riscv_float_abi_soft")
+set(LINKER_FLAGS "-march=rv32imac -mabi=ilp32 -T ${LINKER_SCRIPT} -Wl,--no-warn-rwx-segments -Wl,--Map=${PROJECT_BINARY_DIR}/${TARGET_NAME}.map -nostartfiles -Xlinker --gc-sections -Xlinker --defsym=__stack_size=300 -D__riscv_float_abi_soft")
 
 
 list(APPEND GLOBAL_INCLUDE ${CPU_INCLUDE})

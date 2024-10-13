@@ -37,6 +37,19 @@ add_subdirectory(kernel/${RTOS})
 add_subdirectory(port/${RTOS})
 add_subdirectory(soc)
 
+if(BUILD_ARCH STREQUAL riscv)
+    add_compile_options(
+        -march=rv32imac -mabi=ilp32 -mcmodel=medany
+        -Wall -fmessage-length=0 -ffunction-sections
+        -fdata-sections -fno-builtin-printf
+        -Og -ggdb3 -D__riscv_float_abi_soft
+    )
+elseif(BUILD_ARCH STREQUAL arm)
+    message(FATAL_ERROR "Invalid board to build!")
+else()
+    message(FATAL_ERROR "Invalid board to build!")
+endif()
+
 set(CMAKE_EXE_LINKER_FLAGS ${LINKER_FLAGS})
 
 include_directories(${GLOBAL_INCLUDE})
