@@ -14,7 +14,7 @@
 #define portCONTEXT_SIZE ( 30 * portWORD_SIZE )
 
 .global ez_start_high_rdy
-.global ezos_risc_v_trap_handler
+.global risc_v_trap_handler
 .extern ez_tcb_curptr
 .extern ez_tcb_hdyptr
 .extern synchronous_exception
@@ -30,7 +30,7 @@
 .func
 ez_start_high_rdy:
 
-	la t0, ezos_risc_v_trap_handler
+	la t0, risc_v_trap_handler
 	csrw mtvec, t0
 
 	/* clear sp */
@@ -46,7 +46,7 @@ ez_start_high_rdy:
 	addi x5, x5, 0x80
 	csrw mie, x5
 
-	j ezos_risc_v_trap_handler
+	j risc_v_trap_handler
 
 ez_hang:
 	/* never here */
@@ -55,7 +55,7 @@ ez_hang:
 
 .align 8
 .func
-ezos_risc_v_trap_handler:
+risc_v_trap_handler:
 	/* if sp is zero, exec first task */
 	beq  sp, x0, processed_source
 

@@ -56,15 +56,35 @@ if [[ "${CMD}" == "clean" ]]; then
 fi
 
 if [[ "${CMD}" == "run" ]]; then
-	qemu-system-riscv32 -nographic -machine virt -net none \
-	-chardev stdio,id=con,mux=on -serial chardev:con \
-	-mon chardev=con,mode=readline -bios none \
-	-smp 1 -kernel ${PROJECT_PATH}/out/${PROJECT}.out
+    if [[ "${ARCH}" == "riscv"  ]]; then
+        qemu-system-riscv32 -nographic -machine virt -net none \
+        -chardev stdio,id=con,mux=on -serial chardev:con \
+        -mon chardev=con,mode=readline -bios none \
+        -smp 1 -kernel ${PROJECT_PATH}/out/${PROJECT}.out
+    elif [[ "${ARCH}" == "arm"  ]]; then
+        echo "Invalid Arch to run!"
+        show_help
+        exit 1
+    else 
+        echo "Invalid Arch to run!"
+        show_help
+        exit 1
+    fi
 fi
 
 if [[ "${CMD}" == "gdb" ]]; then
-	qemu-system-riscv32 -nographic -machine virt -net none \
-	-chardev stdio,id=con,mux=on -serial chardev:con \
-	-mon chardev=con,mode=readline -bios none \
-	-smp 1 -kernel ${PROJECT_PATH}/out/${PROJECT}.out -s -S
+    if [[ "${ARCH}" == "riscv"  ]]; then
+        qemu-system-riscv32 -nographic -machine virt -net none \
+        -chardev stdio,id=con,mux=on -serial chardev:con \
+        -mon chardev=con,mode=readline -bios none \
+        -smp 1 -kernel ${PROJECT_PATH}/out/${PROJECT}.out -s -S
+    elif [[ "${ARCH}" == "arm"  ]]; then
+        echo "Invalid Arch to debug!"
+        show_help
+        exit 1
+    else 
+        echo "Invalid Arch to debug!"
+        show_help
+        exit 1
+    fi
 fi
