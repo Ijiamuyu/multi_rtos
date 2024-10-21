@@ -1,0 +1,13 @@
+get_current_component_dir_and_name(component_dir component_name)
+set(PORTABLE_INCLUDE "")
+set(PORTABLE_SOURCE "")
+
+add_subdirectory(${BUILD_ARCH})
+
+list(APPEND PORTABLE_INCLUDE "${component_dir}")
+
+list(APPEND GLOBAL_INCLUDE ${PORTABLE_INCLUDE})
+list(APPEND GLOBAL_SOURCE ${PORTABLE_SOURCE})
+
+set(GLOBAL_INCLUDE ${GLOBAL_INCLUDE} PARENT_SCOPE)
+set(GLOBAL_SOURCE ${GLOBAL_SOURCE} PARENT_SCOPE)

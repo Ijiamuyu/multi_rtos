@@ -38,10 +38,8 @@ void task2(void *p_arg) {
 
 int main(void) {
     ez_err err;
-    int i;
-    for (i = 0; i < 1; i++)
-        console_printf("Hello App %d\n", i);
 
+    console_printf("\nBuild in %s(%s)\n", __DATE__,__TIME__);
     ez_init(&err);
     /* 创建任务 */
     ez_task_creat(

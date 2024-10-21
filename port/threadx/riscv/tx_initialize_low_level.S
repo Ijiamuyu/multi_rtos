@@ -1,10 +1,10 @@
 /***************************************************************************
- * Copyright (c) 2024 Microsoft Corporation 
- * 
+ * Copyright (c) 2024 Microsoft Corporation
+ *
  * This program and the accompanying materials are made available under the
  * terms of the MIT License which is available at
  * https://opensource.org/licenses/MIT.
- * 
+ *
  * SPDX-License-Identifier: MIT
  **************************************************************************/
 
@@ -79,7 +79,7 @@ __tx_free_memory_start:
 	#error Assembler did not define __riscv_xlen
 #endif
 
-#define portCONTEXT_SIZE ( 30 * portWORD_SIZE )
+#define portCONTEXT_SIZE ( 32 * portWORD_SIZE )
 
 .global risc_v_trap_handler
 .extern synchronous_exception
@@ -169,6 +169,7 @@ handle_asynchronous:
 		sw t4, 0(t0)
 		sw t6, 4(t0)
 
+		sw x1, 0x70(sp)
 		call _tx_thread_context_save
 		/* add time tick code here */
 		call _tx_timer_interrupt

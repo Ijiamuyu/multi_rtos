@@ -1,10 +1,10 @@
 /***************************************************************************
- * Copyright (c) 2024 Microsoft Corporation 
- * 
+ * Copyright (c) 2024 Microsoft Corporation
+ *
  * This program and the accompanying materials are made available under the
  * terms of the MIT License which is available at
  * https://opensource.org/licenses/MIT.
- * 
+ *
  * SPDX-License-Identifier: MIT
  **************************************************************************/
 
@@ -256,7 +256,7 @@ _tx_thread_no_preempt_restore:
     /* Restore registers,
        Skip global pointer because that does not change */
 
-    LOAD    t0, 240(sp)                                 // Recover mepc
+    LOAD    t0, 120(sp)                                 // Recover mepc
     csrw    mepc, t0                                    // Setup mepc
     li      t0, 0x1880                                  // Prepare MPIP
     csrw    mstatus, t0                                 // Enable MPIP

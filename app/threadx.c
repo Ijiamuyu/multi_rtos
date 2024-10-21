@@ -1,41 +1,45 @@
 #include <stdint.h>
+#include <stdio.h>
 #include "common.h"
 #include "console.h"
 #include "tx_api.h"
 
 
-#define THREAD1_PRIO         3
+#define THREAD1_PRIO         2
 #define THREAD1_STACK_SIZE   1024
 static  TX_THREAD thread1;
 uint8_t thread1_stack[THREAD1_STACK_SIZE];
- 
-#define THREAD2_PRIO         2
+
+#define THREAD2_PRIO         1
 #define THREAD2_STACK_SIZE   1024
 static  TX_THREAD thread2;
 uint8_t thread2_stack[THREAD2_STACK_SIZE];
 
+volatile uint32_t thread1_cnt=0;
+volatile uint32_t thread2_cnt=0;
 
 void my_thread1_entry(ULONG thread_input)
 {
   /* Enter into a forever loop. */
   while(1)
   {
-    console_printf("threadx 1 application running...\r\n");
-    tx_thread_sleep(50);
+    console_printf("threadx 1 application running %d times, thread2_cnt:%d",++thread1_cnt, thread2_cnt);
+    tx_thread_relinquish();
+    //tx_thread_sleep(100);
   }
 }
- 
+
 void my_thread2_entry(ULONG thread_input)
 {
   /* Enter into a forever loop. */
   while(1)
   {
-    console_printf("threadx 2 application running...\r\n");
+    console_printf("threadx 2 application running %d times",++thread2_cnt);
 
-    tx_thread_sleep(100);
+    tx_thread_sleep(10);
   }
 }
- 
+
 void tx_application_define(void *first_unused_memory)
 {
   /* Create thread */
@@ -48,9 +52,9 @@ void tx_application_define(void *first_unused_memory)
 
 int main(void)
 {
-    console_printf("\r\nthreadX RTOS start\r\n");
+  console_printf("\nBuild in %s(%s)\n", __DATE__,__TIME__);
+  console_printf("threadX RTOS start\n");
 
-    tx_kernel_enter( );
-    hang();
+  tx_kernel_enter( );
+  hang();
 }
- 

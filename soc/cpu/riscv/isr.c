@@ -60,28 +60,25 @@ static void print_csr(void) {
 }
 
 void synchronous_exception(void) {
-    uart_send_string("synchronous exception");
+    uart_send_string("\nsynchronous exception");
     print_csr();
     while (1)
         ;
 }
 
 void software_handler(void) {
-    uart_send_string("software exception");
+    uart_send_string("\nsoftware exception");
     print_csr();
     while (1)
         ;
 }
 
 void external_handler(void) {
-    uart_send_string("external exception");
-    print_csr();
-    while (1)
-        ;
+
 }
 
 void yet_unhandler(void) {
-    uart_send_string("yet_unhandler exception");
+    uart_send_string("\nyet_unhandler exception");
     print_csr();
     while (1)
         ;

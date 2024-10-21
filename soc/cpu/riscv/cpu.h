@@ -4,6 +4,8 @@
 
 #include "riscv-reg.h"
 
+#define CPU_ARCH_RISCV
+
 #ifdef __ASSEMBLER__
 #define CONS(NUM, TYPE) NUM
 #else

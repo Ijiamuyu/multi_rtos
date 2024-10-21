@@ -16,7 +16,7 @@ if [[ "${CMD}" == "build" ]]; then
         export CROSS_COMPILE=riscv64-unknown-elf-
     elif [[ "${ARCH}" == "arm"  ]]; then
         export CROSS_COMPILE=
-    else 
+    else
         echo "Invalid project to build!"
         echo "Build failed!"
         show_help
@@ -37,7 +37,7 @@ if [[ "${CMD}" == "build" ]]; then
 
     echo "build arch ${ARCH}, rtos ${RTOS}"
     cmake .. -G "Unix Makefiles"  -DBUILD_ARCH=${ARCH} -DRTOS=${RTOS} -DTARGET_NAME=${PROJECT}
-    make
+    make -j $(nproc)
     if [[ $? == 0 ]]; then
         cp ${PROJECT_PATH}/build/${PROJECT}.out ${PROJECT_PATH}/out
         cp ${PROJECT_PATH}/build/${PROJECT}.map ${PROJECT_PATH}/out
@@ -65,7 +65,7 @@ if [[ "${CMD}" == "run" ]]; then
         echo "Invalid Arch to run!"
         show_help
         exit 1
-    else 
+    else
         echo "Invalid Arch to run!"
         show_help
         exit 1
@@ -73,6 +73,7 @@ if [[ "${CMD}" == "run" ]]; then
 fi
 
 if [[ "${CMD}" == "gdb" ]]; then
+    echo "multi rtos gdb is runing..., please type tar rem:1234 to access"
     if [[ "${ARCH}" == "riscv"  ]]; then
         qemu-system-riscv32 -nographic -machine virt -net none \
         -chardev stdio,id=con,mux=on -serial chardev:con \
@@ -82,9 +83,15 @@ if [[ "${CMD}" == "gdb" ]]; then
         echo "Invalid Arch to debug!"
         show_help
         exit 1
-    else 
+    else
         echo "Invalid Arch to debug!"
         show_help
         exit 1
     fi
+fi
+
+if [[ "${CMD}" != "build" && "${CMD}" != "clean" && "${CMD}" != "run" && "${CMD}" != "gdb" ]]; then
+    echo "Invalid CMD!"
+    show_help
+    exit 1
 fi
