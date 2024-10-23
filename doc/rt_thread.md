@@ -2,7 +2,7 @@
 本文主要介绍rt_thread移植要点
 
 # trace
-追踪sparrow平台的rt-thread代码流程，采用向量模式，需要准备rt_hw_interrupt_disable，rt_hw_board_init等操作，除此以外还有rt_hw_do_after_save_above，rt_trigger_software_interrupt（非向量模式不需要），准备一个systick
+追踪riscv平台的rt-thread代码流程，采用向量模式，需要准备rt_hw_interrupt_disable，rt_hw_board_init等操作，除此以外还有rt_hw_do_after_save_above，rt_trigger_software_interrupt（非向量模式不需要），准备一个systick
 ```c
 main
     -->|rt_post_start_scheduler

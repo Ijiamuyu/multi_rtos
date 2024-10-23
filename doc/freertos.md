@@ -2,7 +2,7 @@
 本文主要介绍freertos的移植要点
 
 # tarce
-以sparrow的freertos为例，追踪代码调用过程
+以riscv的freertos为例，追踪代码调用过程
 ```c
 main
     -->|soc_init
