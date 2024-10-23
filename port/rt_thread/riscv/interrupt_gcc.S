@@ -17,7 +17,7 @@
     .align  6
 #else
     .align  2
-#endif 
+#endif
     .global SW_handler
 
 SW_handler:

@@ -14,7 +14,7 @@ void rt_show_stack_frame(void);
  * @param mcause Machine Cause Register
  * @return RT_NULL
  */
-rt_weak rt_isr_handler_t rt_hw_interrupt_handle(rt_uint32_t mcause)
+RT_WEAK rt_isr_handler_t rt_hw_interrupt_handle(rt_uint32_t mcause)
 {
     rt_kprintf("UN-handled interrupt %d occurred!!!\n", mcause);
     return RT_NULL;
@@ -23,7 +23,7 @@ rt_weak rt_isr_handler_t rt_hw_interrupt_handle(rt_uint32_t mcause)
 /**
  * Interrupt entry function initialization
  */
-rt_weak void rt_hw_interrupt_init(void)
+RT_WEAK void rt_hw_interrupt_init(void)
 {
     int idx = 0;
 
@@ -43,11 +43,10 @@ rt_weak void rt_hw_interrupt_init(void)
  * @param name    NULL
  * @return old handler
  */
-rt_weak rt_isr_handler_t rt_hw_interrupt_install(int vector, rt_isr_handler_t handler,
+RT_WEAK rt_isr_handler_t rt_hw_interrupt_install(int vector, rt_isr_handler_t handler,
         void *param, const char *name)
 {
     rt_isr_handler_t old_handler = RT_NULL;
-    void *user_param = param;
 
     if(vector < ISR_NUMBER)
     {
@@ -67,7 +66,7 @@ rt_weak rt_isr_handler_t rt_hw_interrupt_install(int vector, rt_isr_handler_t ha
  *
  * @param mcause Machine Cause Register
  */
-rt_weak void rt_rv32_system_irq_handler(rt_uint32_t mcause)
+RT_WEAK void rt_rv32_system_irq_handler(rt_uint32_t mcause)
 {
     rt_uint32_t mscratch = read_csr(0x340);
     rt_uint32_t irq_id = (mcause & 0x1F);
@@ -86,7 +85,7 @@ rt_weak void rt_rv32_system_irq_handler(rt_uint32_t mcause)
 /**
  * Register Print on Exception
  */
-rt_weak void rt_show_stack_frame(void)
+RT_WEAK void rt_show_stack_frame(void)
 {
     rt_kprintf("Stack frame:\r\n----------------------------------------\r\n");
     rt_kprintf("ra      : 0x%08x\r\n", s_stack_frame->ra);

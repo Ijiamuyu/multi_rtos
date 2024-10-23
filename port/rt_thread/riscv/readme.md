@@ -101,11 +101,11 @@ void rt_hw_do_after_save_above(void)
         __stack_bottom = .;
         . += __stack_size;
         __stack_top = .;
-        PROVIDE( __rt_rvstack = . );//移植时添加 
+        PROVIDE( __rt_rvstack = . );//移植时添加
         stack = .;
       } > L2
     ```
-  
+
 > __stack_top为core-v-mcu工程的中断栈顶名  不同工程此处的名称可能不一致 按上述方法将给出的代码放到具体工程链接脚本中断栈顶名称之后即可。
 
 - 步骤三：实现在中断上下文切换的函数接口
@@ -118,18 +118,18 @@ void rt_hw_do_after_save_above(void)
 
   ```assembly
     #include "cpuport.h"
-    
+
     	.globl rt_hw_do_after_save_above
     	.type rt_hw_do_after_save_above,@function
     rt_hw_do_after_save_above:
     	addi  sp, sp,  -4
         STORE ra,  0 * REGBYTES(sp)
-    
+
         csrr  a0, mcause
         csrr  a1, mepc
         mv    a2, sp
         call  rt_rv32_system_irq_handler
-    
+
         LOAD  ra,  0 * REGBYTES(sp)
         addi  sp, sp,  4
         ret
@@ -138,7 +138,7 @@ void rt_hw_do_after_save_above(void)
   随后用户仅需调用rt_hw_interrupt_init进行初始化，再将中断入口函数通过rt_hw_interrupt_install函数注册即可，注册的中断入口函数为裸机原有的中断入口函数，示例代码如下(相关设备的中断入口函数注册之前不可使用该设备):
 
   ```c
-        rt_hw_interrupt_init();//中断入口函数初始化 
+        rt_hw_interrupt_init();//中断入口函数初始化
         rt_hw_interrupt_install(0x7, timer_irq_handler, RT_NULL, "timerirq");//注册系统定时器中断入口函数
         rt_hw_interrupt_install(0xb, fc_soc_event_handler1, RT_NULL, "eventirq");//注册外部中断入口函数
   ```
@@ -148,34 +148,34 @@ void rt_hw_do_after_save_above(void)
   - 向量中断(可参考ch32)
 
     在RT-Thread的BSP框架中的board文件夹创建需要的文件，实现下述的两个函数：
-    
+
     - 在void rt_trigger_software_interrupt(void) 中实现触发软件中断的操作
-    
+
     - 在void rt_hw_do_after_save_above(void) 中实现触发软件中断之后的工作，通常是清除软件中断置位标志位或类似操作
-  
+
   - 非向量中断(期望采用原有裸机工程的统一的中断查询与处理函数)
-  
+
   在RT-Thread的BSP框架中的board文件夹创建一个统一名称的汇编文件：trap_gcc.S,将该文件添加到编译环境即可，此步骤与方式一提供的方法相似，仅在调用中断处理函数以及传递的参数不同，需要根据具体的移植工程实现，方式二下该函数的实现如下：
-  
+
   示例代码：
-  
+
   ```assembly
     #include "cpuport.h"
-    
+
     	.globl rt_hw_do_after_save_above
     	.type rt_hw_do_after_save_above,@function
     rt_hw_do_after_save_above:
-    	addi  sp, sp,  -4 // 移动栈指针 
+    	addi  sp, sp,  -4 // 移动栈指针
         STORE ra,  0 * REGBYTES(sp) // 将返回地址寄存器值保存至栈中
-            
+
         csrr  a0, mscratch// 加载函数入口参数
         call  trap_entry// 调用中断处理函数
-            
+
         LOAD  ra,  0 * REGBYTES(sp) // 从栈中恢复返回地址寄存器值
-        addi  sp, sp,  4// 移动栈指针 
+        addi  sp, sp,  4// 移动栈指针
         ret	// 返回SW_handler
   ```
-  
+
     trap_entry为用户实现的中断源查询分发的函数，在移植时仅需要将该函数名修改为用户的中断查询分发函数即可。
 
 

@@ -1,4 +1,5 @@
 #include "cpu.h"
+#include "common.h"
 
 static void int_to_str(const char* s, unsigned int num, char* str) {
     int i, s_len;
@@ -62,15 +63,13 @@ static void print_csr(void) {
 void synchronous_exception(void) {
     uart_send_string("\nsynchronous exception");
     print_csr();
-    while (1)
-        ;
+    hang();
 }
 
 void software_handler(void) {
     uart_send_string("\nsoftware exception");
     print_csr();
-    while (1)
-        ;
+    hang();
 }
 
 void external_handler(void) {
@@ -80,6 +79,5 @@ void external_handler(void) {
 void yet_unhandler(void) {
     uart_send_string("\nyet_unhandler exception");
     print_csr();
-    while (1)
-        ;
+    hang();
 }

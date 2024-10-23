@@ -66,4 +66,6 @@ typedef union {
 #endif
 #endif
 
+#define __rt_rvstack _stack_top
+
 #endif

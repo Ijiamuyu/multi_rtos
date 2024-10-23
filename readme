@@ -1,1 +1,8 @@
 support multi rtos in qemu platform(rtos & arm)
+
+version 1.0.0:
+    support ezos rt-thread freertos threadx run on riscv-virt
+to do:
+    - add port doc
+    - add arm platform
+    - fullfill ezos

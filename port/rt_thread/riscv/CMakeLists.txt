@@ -5,7 +5,6 @@ set(PORT_RISCV_SOURCE "")
 
 list(APPEND PORT_RISCV_INCLUDE "${component_dir}")
 list(APPEND PORT_RISCV_SOURCE "${component_dir}/port.c")
-list(APPEND PORT_RISCV_SOURCE "${component_dir}/atomic_riscv.c")
 list(APPEND PORT_RISCV_SOURCE "${component_dir}/context_gcc.S")
 list(APPEND PORT_RISCV_SOURCE "${component_dir}/cpuport.c")
 list(APPEND PORT_RISCV_SOURCE "${component_dir}/interrupt_gcc.S")

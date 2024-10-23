@@ -22,7 +22,7 @@ void task1_task(void *pvParameters)
 {
     while(1)
     {
-        console_printf("threadx 1 application running %d times\r\n",++thread1_cnt);
+        console_printf("freertos 1 application running %d times\r\n",++thread1_cnt);
         vTaskDelay(50); //延时500ms
     }
 }
@@ -32,7 +32,7 @@ void task2_task(void *pvParameters)
 {
     while(1)
     {
-        console_printf("threadx 2 application running %d times\r\n",++thread2_cnt);
+        console_printf("freertos 2 application running %d times\r\n",++thread2_cnt);
         vTaskDelay(100); //延时200ms
     }
 }

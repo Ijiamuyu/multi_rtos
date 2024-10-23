@@ -66,12 +66,12 @@ rt_uint8_t *rt_hw_stack_init(void       *tentry,
     return stk;
 }
 
-rt_weak void rt_trigger_software_interrupt(void)
+RT_WEAK void rt_trigger_software_interrupt(void)
 {
     while (0);
 }
 
-rt_weak void rt_hw_do_after_save_above(void)
+RT_WEAK void rt_hw_do_after_save_above(void)
 {
     while (1);
 }
@@ -84,7 +84,7 @@ rt_weak void rt_hw_do_after_save_above(void)
  * #endif
  */
 #ifndef RT_USING_SMP
-rt_weak void rt_hw_context_switch_interrupt(rt_ubase_t from, rt_ubase_t to, rt_thread_t from_thread, rt_thread_t to_thread)
+RT_WEAK void rt_hw_context_switch_interrupt(rt_ubase_t from, rt_ubase_t to)
 {
     if (rt_thread_switch_interrupt_flag == 0)
         rt_interrupt_from_thread = from;
